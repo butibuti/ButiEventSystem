@@ -1,5 +1,0 @@
-﻿  TaskSystem.cpp
-  main.cpp
-D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\ButiEventSystem\EventSystem.h(272,1): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
-  コードを生成中...
-  ButiEventSystemSample.vcxproj -> D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\x64\Debug\ButiEventSystemSample.exe
