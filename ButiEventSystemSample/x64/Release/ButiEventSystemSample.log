@@ -1,0 +1,54 @@
+﻿  stdafx.cpp
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(64,106): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(70,104): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(90,100): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(96,98): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  EventSystem.cpp
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\ButiEventSystem\EventSystem.h(272,1): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\ButiEventSystem\EventSystem.h(131,1): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\ButiEventSystem\EventSystem.h(119): message : クラス テンプレート メンバー関数 'void ButiEventSystem::EventMessenger<void *>::Regist(std::shared_ptr<ButiEventSystem::EventListenerRegister<ButiEventSystem::PV>>,const int)' のコンパイル中
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\ButiEventSystem\EventSystem.cpp(136): message : コンパイル対象の関数 テンプレート インスタンス化 'void ButiEventSystem::EventMessenger<void *>::Regist(std::shared_ptr<ButiEventSystem::EventListenerRegister<ButiEventSystem::PV>>,const int)' のリファレンスを確認してください
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\ButiEventSystem\EventSystem.cpp(23): message : コンパイル対象の クラス テンプレート インスタンス化 'ButiEventSystem::EventMessenger<void *>' のリファレンスを確認してください
+  TaskSystem.cpp
+  BinaryReader.cpp
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\BinaryReader.cpp(278,33): warning C4267: '引数': 'size_t' から 'T' に変換しました。データが失われているかもしれません。
+          with
+          [
+              T=int
+          ]
+  CSVReader.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xutility(151,1): warning C4267: '引数': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\memory(2021): message : コンパイル対象の関数 テンプレート インスタンス化 'void std::_Construct_in_place<_Ty,unsigned __int64,unsigned __int64>(_Ty &,unsigned __int64 &&,unsigned __int64 &&) noexcept(false)' のリファレンスを確認してください
+          with
+          [
+              _Ty=ButiEngine::CSVData
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\memory(2747): message : コンパイル対象の関数 テンプレート インスタンス化 'std::_Ref_count_obj2<_Ty>::_Ref_count_obj2<unsigned __int64,unsigned __int64>(unsigned __int64 &&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=ButiEngine::CSVData
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\memory(2748): message : コンパイル対象の関数 テンプレート インスタンス化 'std::_Ref_count_obj2<_Ty>::_Ref_count_obj2<unsigned __int64,unsigned __int64>(unsigned __int64 &&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=ButiEngine::CSVData
+          ]
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\CSVReader.cpp(23): message : コンパイル対象の関数 テンプレート インスタンス化 'std::shared_ptr<_Ty> std::make_shared<ButiEngine::CSVData,unsigned __int64,unsigned __int64>(unsigned __int64 &&,unsigned __int64 &&)' のリファレンスを確認してください
+          with
+          [
+              _Ty=ButiEngine::CSVData
+          ]
+  CSVWriter.cpp
+  StringHelper.cpp
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Helper\StringHelper.cpp(17,48): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Helper\StringHelper.cpp(25,52): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Helper\StringHelper.cpp(27,24): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  Util.cpp
+  main.cpp
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\ButiEventSystem\EventSystem.h(272,1): warning C4267: '初期化中': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  コード生成しています。
+  545 of 1104 functions (49.4%) were compiled, the rest were copied from previous compilation.
+    304 functions were new in current compilation
+    57 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  ButiEventSystemSample.vcxproj -> D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiEventSystem\x64\Release\ButiEventSystemSample.exe

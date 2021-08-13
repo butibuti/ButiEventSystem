@@ -1,0 +1,29 @@
+﻿  BinaryReader.cpp
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(62,44): error C2065: 'CP_THREAD_ACP': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(62,24): error C3861: 'MultiByteToWideChar': 識別子が見つかりませんでした
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(68,24): error C2065: 'CP_THREAD_ACP': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(68,4): error C3861: 'MultiByteToWideChar': 識別子が見つかりませんでした
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(71,41): error C2065: 'CP_UTF8': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(71,21): error C3861: 'WideCharToMultiByte': 識別子が見つかりませんでした
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(77,24): error C2065: 'CP_UTF8': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(77,4): error C3861: 'WideCharToMultiByte': 識別子が見つかりませんでした
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(88,44): error C2065: 'CP_UTF8': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(88,24): error C3861: 'MultiByteToWideChar': 識別子が見つかりませんでした
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(94,24): error C2065: 'CP_UTF8': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(94,4): error C3861: 'MultiByteToWideChar': 識別子が見つかりませんでした
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(97,41): error C2065: 'CP_THREAD_ACP': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(97,21): error C3861: 'WideCharToMultiByte': 識別子が見つかりませんでした
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(103,24): error C2065: 'CP_THREAD_ACP': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(103,4): error C3861: 'WideCharToMultiByte': 識別子が見つかりませんでした
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(148,23): error C3646: 'BitSeparate': 不明なオーバーライド指定子です
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(148,35): error C2065: 'BYTE': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(148,40): error C2146: 構文エラー: ')' が、識別子 'n' の前に必要です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(149,3): error C2334: '{' の前に予期しないトークンがありました。関数の本体は無視されます
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(160,5): error C2065: 'DWORD': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(160,11): error C2146: 構文エラー: ';' が、識別子 'Check' の前に必要です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(160,11): error C2065: 'Check': 定義されていない識別子です。
+D:\K019G1120\Projects\ButiEngine\Libs\Library\ButiUtil\Util\Util.h(161,9): error C2065: 'Check': 定義されていない識別子です。
+  Util.cpp
+D:\K019G1120\Projects\ButiEngine\Libs\Library\Header\GameParts\Application.h(2,9): fatal error C1083: include ファイルを開けません。'stdafx.h':No such file or directory
+  main.cpp
+  コードを生成中...

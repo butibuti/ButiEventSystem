@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+*.zip
+*.idb
+.vs/
+Temp/
+output/
