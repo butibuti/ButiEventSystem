@@ -1,0 +1,2 @@
+# ButiEventSystem
+ButiEngineで使用している非同期タスクシステムとイベント管理ライブラリ
