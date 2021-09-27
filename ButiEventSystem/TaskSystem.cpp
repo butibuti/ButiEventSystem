@@ -1,6 +1,7 @@
 #include"stdafx.h"
+#include<thread>
+#include<functional>
 #include "TaskSystem.h"
-
 namespace ButiTaskSystem {
 class TaskQueue::ImplInstance {
     friend class TaskQueue;
@@ -63,6 +64,7 @@ void ButiTaskSystem::TaskQueue::Dispose()
         itr->join();
     }
     p_instance->vec_thread.clear();
+    delete p_instance;
 }
 
 void ButiTaskSystem::TaskQueue::Process()

@@ -2,7 +2,9 @@
 #ifndef BUTITASKSYSTEM_H
 #define BUTITASKSYSTEM_H
 
-
+#include<mutex>
+#include<future>
+#include<queue>
 namespace ButiTaskSystem {
 
 /// <summary>
@@ -123,7 +125,7 @@ private:
     std::condition_variable cv_push, cv_pop;
     std::queue<T> queue_values;
     int Size;
-    bool isEnd;
+    bool isEnd=false;
 };
 /// <summary>
 /// スレッドセーフなサイズ制限つきキュー(std::unique_ptrで所有権を制限)
@@ -148,20 +150,15 @@ public:
     /// </summary>
     /// <param name="value">要素</param>
     void Push(std::unique_ptr<T> value) {
-        std::unique_lock<std::mutex> lock_push(mutex_push);
+        std::unique_lock<std::mutex> lock_push(mtx_guard);
         cv_push.wait(lock_push, [&]()-> bool {
-            return queue_values.size() < Size||isEnd;
+            return queue_values.size() < Size ||isEnd;
             });
 
-        if (queue_values.size() >= Size) {
+        if (isEnd) {
             //終了しているのでリターン
             return;
         }
-
-        std::unique_lock<std::mutex> lock_pop(mutex_pop);
-
-
-
         queue_values.push(std::move(value));
         cv_pop.notify_all();
     }
@@ -172,16 +169,14 @@ public:
     /// </summary>
     /// <returns>先頭の要素</returns>
     std::unique_ptr<T> Pop() {
-
-
-        std::unique_lock<std::mutex> lock_pop(mutex_pop);
+        std::unique_lock<std::mutex> lock_pop(mtx_guard);
         cv_pop.wait(lock_pop, [&]()-> bool {
             return queue_values.size() || isEnd; });
 
-        if (!queue_values.size()) {
+        if (isEnd) {
             return nullptr;
         }
-        std::unique_lock<std::mutex> lock_push(mutex_push);
+
         auto ret = std::move(queue_values.front());
         queue_values.pop();
         cv_push.notify_all();
@@ -196,10 +191,10 @@ public:
         cv_push.notify_all();
     }
 private:
-    std::mutex mutex_push, mutex_pop;
+    std::mutex mtx_guard;
     std::condition_variable cv_push, cv_pop;
     std::queue<std::unique_ptr <T>> queue_values;
-    int Size;
+    int Size=0;
     bool isEnd = false;
 };
 

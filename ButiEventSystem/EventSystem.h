@@ -7,8 +7,8 @@
 
 #define IMPLEVENT( TYPE)\
 template<> void ButiEventSystem::AddEventMessenger < TYPE >(const std::string& );\
-template<> void ButiEventSystem::RegistEventListner < TYPE >(const std::string& ,std::shared_ptr<EventListenerRegister< TYPE >> , const int );\
-template<> void ButiEventSystem::UnRegistEventListner < TYPE >(const std::string& ,std::shared_ptr<EventListenerRegister< TYPE >> );\
+template<> std::string ButiEventSystem::RegistEventListner < TYPE >(const std::string& , const std::string& , std::function<void( TYPE)> , const bool  , const int );\
+template<> void ButiEventSystem::UnRegistEventListner < TYPE >(const std::string& ,const std::string& );\
 template<> void ButiEventSystem::Execute < TYPE >(const std::string& ,const TYPE & );\
 
 
@@ -23,41 +23,6 @@ enum ButiEventPriority {
     Priority_Min = -1, Priority_Max = -2,
 };
 
-/// <summary>
-/// イベントリスナーの登録用インスタンス
-/// </summary>
-/// <typeparam name="T">引数の型</typeparam>
-template<typename T>
-class EventListenerRegister :public ButiEngine::IObject {
-public:
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="arg_func">イベントリスナー(コールバック関数)</param>
-    EventListenerRegister(std::function<void(T)>arg_func) { func = arg_func;  p_key = malloc(1); }
-    ~EventListenerRegister() {
-        delete p_key;
-    }
-    /// <summary>
-    /// 管理している関数の取得
-    /// </summary>
-    /// <returns></returns>
-    std::function<void(T)>GetFunc() { return func; }
-    /// <summary>
-    /// 登録用キーの取得
-    /// </summary>
-    /// <returns></returns>
-    long long int GetKey()const {
-        if (!p_key) {
-            return -1;
-        }
-
-        return *(long long int*) & p_key;
-    }
-private:
-    std::function<void(T)>func;
-    void* p_key;
-};
 /// <summary>
 /// イベントメッセンジャーのインターフェース
 /// </summary>
@@ -113,25 +78,36 @@ public:
     /// <summary>
     /// イベントリスナーの登録
     /// </summary>
-    /// <param name="arg_func">イベントリスナーの登録用オブジェクト</param>
+    /// <param name="arg_key">イベントリスナーの名前</param>
+    /// <param name="arg_func">イベントリスナーの登録用関数オブジェクト</param>
+    /// <param name="canDuplicate">同名イベントリスナーを許容するかどうか</param>
     /// <param name="priority">優先度</param>
-    inline void Regist(std::shared_ptr<EventListenerRegister<T>> arg_func, const int priority = ButiEventPriority::Priority_Min)
+    inline std::string Regist(const std::string& arg_key, std::function<void(T)> arg_func,const bool canDuplicate, const int priority = ButiEventPriority::Priority_Min)
     {
-        long long int key = arg_func->GetKey();
-        if (key < 0) {
-            throw ButiEngine::ButiException(L"実体のないコールバック関数を登録しようとしています");
-        }
+        auto key = arg_key;
         if (map_funtionIndexPtr.count(key)) {
-            return;
+            //登録済みかつ同名イベントリスナーを許容しないのでreturn
+            if (!canDuplicate) {
+                return arg_key;
+            }
+            map_keyDuplicateCount.at(arg_key)+=1;
+            key+="_"+ std::to_string(map_keyDuplicateCount.at(arg_key));
         }
+        else {
+            map_keyDuplicateCount.emplace(arg_key, 0);
+        }
+
+
+
         int currentEvPriority = priority == ButiEventPriority::Priority_Max ? currentEvPriority = maxPriority + 1 : priority == ButiEventPriority::Priority_Min ? currentEvPriority = minPriority : priority;
 
 
 
         vec_functionIndex.push_back(new int(vec_functionAndPriority.size()));
         map_funtionIndexPtr.emplace(key, vec_functionIndex.back());
+        
 
-        vec_functionAndPriority.push_back({ arg_func->GetFunc(),currentEvPriority });
+        vec_functionAndPriority.push_back({ arg_func,currentEvPriority });
 
 
         //優先度が最小、最大の場合は末尾、先頭に追加するのみ
@@ -139,37 +115,37 @@ public:
             minPriority = currentEvPriority;
 
             if (sorted) {
-                vec_functions.push_back(arg_func->GetFunc());
+                vec_functions.push_back(arg_func);
             }
 
-            return;
+            return key;
         }
         else if (currentEvPriority > maxPriority) {
             maxPriority = currentEvPriority;
             if (sorted) {
-                vec_functions.insert(vec_functions.begin(), arg_func->GetFunc());
+                vec_functions.insert(vec_functions.begin(), arg_func);
             }
-            return;
+            return key;
         }
 
         sorted = false;
+        return key;
     }
     /// <summary>
     /// イベントリスナーの登録解除
     /// </summary>
     /// <param name="arg_func">イベントリスナーの登録用オブジェクト</param>
-    inline void UnRegist(std::shared_ptr<EventListenerRegister<T>> arg_func)
+    inline void UnRegist(const std::string& arg_key)
     {
-        auto key = arg_func->GetKey();
-        if (!map_funtionIndexPtr.count(key)) {
+        if (!map_funtionIndexPtr.count(arg_key)) {
             return;
         }
 
 
-        int index = *map_funtionIndexPtr.at(key);
+        int index = *map_funtionIndexPtr.at(arg_key);
 
         vec_functionAndPriority.erase(vec_functionAndPriority.begin() + index);
-        map_funtionIndexPtr.erase(key);
+        map_funtionIndexPtr.erase(arg_key);
         delete vec_functionIndex.at(index);
 
         for (auto indexItr = vec_functionIndex.erase(vec_functionIndex.begin() + index), end = vec_functionIndex.end(); indexItr != end; indexItr++) {
@@ -202,7 +178,8 @@ private:
     std::vector<std::pair< std::function<void(T)>, int>> vec_functionAndPriority;
     std::vector<std::function<void(T)>> vec_functions;
     std::vector<int*> vec_functionIndex;
-    std::map<long long int, int*> map_funtionIndexPtr;
+    std::map<std::string, int*> map_funtionIndexPtr;
+    std::map<std::string, int> map_keyDuplicateCount;
     std::map<int, int*> map_priority;
     int maxPriority = 0, minPriority = 0;
     bool sorted = true;
@@ -256,14 +233,19 @@ public:
     /// </summary>
     /// <param name="arg_func">イベントリスナーの登録用オブジェクト</param>
     /// <param name="priority">優先度</param>
-    inline void Regist(std::shared_ptr<EventListenerRegister<void>> arg_func, const int priority = ButiEventPriority::Priority_Min)
+    inline std::string Regist(const std::string& arg_key, std::function<void(void)> arg_func, const bool canDuplicate, const int priority = ButiEventPriority::Priority_Min)
     {
-        long long int key = arg_func->GetKey();
-        if (key < 0) {
-            throw ButiEngine::ButiException(L"実体のないコールバック関数を登録しようとしています");
-        }
+        auto key = arg_key;
         if (map_funtionIndexPtr.count(key)) {
-            return;
+            //登録済みかつ同名イベントリスナーを許容しないのでreturn
+            if (!canDuplicate) {
+                return arg_key;
+            }
+            map_keyDuplicateCount.at(arg_key) += 1;
+            key += "_" + std::to_string(map_keyDuplicateCount.at(arg_key));
+        }
+        else {
+            map_keyDuplicateCount.emplace(arg_key, 0);
         }
         int currentEvPriority = priority == ButiEventPriority::Priority_Max ? currentEvPriority = maxPriority + 1 : priority == ButiEventPriority::Priority_Min ? currentEvPriority = minPriority : priority;
 
@@ -272,7 +254,7 @@ public:
         vec_functionIndex.push_back(new int(vec_functionAndPriority.size()));
         map_funtionIndexPtr.emplace(key, vec_functionIndex.back());
 
-        vec_functionAndPriority.push_back({ arg_func->GetFunc(),currentEvPriority });
+        vec_functionAndPriority.push_back({ arg_func,currentEvPriority });
 
 
         //優先度が最小、最大の場合は末尾、先頭に追加するのみ
@@ -280,38 +262,38 @@ public:
             minPriority = currentEvPriority;
 
             if (sorted) {
-                vec_functions.push_back(arg_func->GetFunc());
+                vec_functions.push_back(arg_func);
             }
 
-            return;
+            return key;
         }
         else if (currentEvPriority > maxPriority) {
             maxPriority = currentEvPriority;
             if (sorted) {
-                vec_functions.insert(vec_functions.begin(), arg_func->GetFunc());
+                vec_functions.insert(vec_functions.begin(), arg_func);
             }
-            return;
+            return key;
         }
-
+        
         sorted = false;
+        return key;
     }
 
     /// <summary>
     /// イベントリスナーの登録解除
     /// </summary>
     /// <param name="arg_func">イベントリスナーの登録用オブジェクト</param>
-    inline void UnRegist(std::shared_ptr<EventListenerRegister<void>> arg_func)
+    inline void UnRegist(const std::string& arg_key)
     {
-        auto key = arg_func->GetKey();
-        if (!map_funtionIndexPtr.count(key)) {
+        if (!map_funtionIndexPtr.count(arg_key)) {
             return;
         }
 
 
-        int index = *map_funtionIndexPtr.at(key);
+        int index = *map_funtionIndexPtr.at(arg_key);
 
         vec_functionAndPriority.erase(vec_functionAndPriority.begin() + index);
-        map_funtionIndexPtr.erase(key);
+        map_funtionIndexPtr.erase(arg_key);
         delete vec_functionIndex.at(index);
 
         for (auto indexItr = vec_functionIndex.erase(vec_functionIndex.begin() + index), end = vec_functionIndex.end(); indexItr != end; indexItr++) {
@@ -345,7 +327,8 @@ private:
     std::vector<std::pair< std::function<void()>, int>> vec_functionAndPriority;
     std::vector<std::function<void()>> vec_functions;
     std::vector<int*> vec_functionIndex;
-    std::map<long long int, int*> map_funtionIndexPtr;
+    std::map<std::string, int*> map_funtionIndexPtr;
+    std::map<std::string, int> map_keyDuplicateCount;
     std::map<int, int*> map_priority;
     int maxPriority = 0, minPriority = 0;
     bool sorted = true;
@@ -377,16 +360,20 @@ extern void AddEventMessenger(const std::string& arg_eventMessengerName)
 /// </summary>
 /// <typeparam name="T">追加するイベントリスナーの型</typeparam>
 /// <param name="arg_eventMessengerName">イベント名</param>
-/// <param name="arg_func">追加するイベントリスナー(コールバック関数)登録用オブジェクト</param>
-/// <param name="priority"></param>
+/// <param name="arg_eventMessengerName">イベントリスナー名</param>
+/// <param name="arg_func">追加するイベントリスナー(コールバック関数)登録用関数オブジェクト</param>
+/// <param name="canDuplicate">同名イベントリスナーを許容するかどうか</param>
+/// <param name="priority">優先度</param>
 template <typename T>
-void RegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<T>> arg_func, const int priority = ButiEventPriority::Priority_Min)
+std::string RegistEventListner(const std::string& arg_eventMessengerName, const std::string& arg_key, std::function<void(T)> arg_func, const bool canDuplicate, const int priority = ButiEventPriority::Priority_Min)
 {
     auto p_m = GetExEventMessenger(arg_eventMessengerName);
     if (p_m) {
-        ((EventMessenger<T>*)p_m)->Regist(arg_func, priority);
+        return ((EventMessenger<T>*)p_m)->Regist(arg_key, arg_func, canDuplicate, priority);
     }
+    return arg_key;
 }
+std::string RegistEventListner(const std::string& arg_eventMessengerName, const std::string& arg_key, std::function<void(void)> arg_func, const bool canDuplicate, const int priority = ButiEventPriority::Priority_Min);
 /// <summary>
 /// イベントリスナーの登録解除
 /// </summary>
@@ -394,10 +381,10 @@ void RegistEventListner(const std::string& arg_eventMessengerName, std::shared_p
 /// <param name="arg_eventMessengerName">イベント名</param>
 /// <param name="arg_func">削除するイベントリスナー(コールバック関数)登録用オブジェクト</param>
 template <typename T>
-void UnRegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<T>> arg_func) {
+void UnRegistEventListner(const std::string& arg_eventMessengerName, const std::string& arg_key) {
     auto p_m = GetExEventMessenger(arg_eventMessengerName);
     if (p_m) {
-        ((EventMessenger<T>*)p_m)->UnRegist(arg_func);
+        ((EventMessenger<T>*)p_m)->UnRegist(arg_key);
     }
 }
 /// <summary>
@@ -420,8 +407,8 @@ void Execute(const std::string& arg_eventMessengerName, const T& arg_event) {
 extern void Execute(const std::string& arg_eventMessengerName);
 
 template<> void ButiEventSystem::AddEventMessenger < void >(const std::string&); 
-template<> void ButiEventSystem::RegistEventListner < void >(const std::string&, std::shared_ptr<EventListenerRegister< void >>, const int); 
-template<> void ButiEventSystem::UnRegistEventListner < void >(const std::string&, std::shared_ptr<EventListenerRegister< void >>); 
+template<> void ButiEventSystem::UnRegistEventListner < void >(const std::string&, const std::string& ); 
+
 using PV = void*;
 
 IMPLEVENT(int)

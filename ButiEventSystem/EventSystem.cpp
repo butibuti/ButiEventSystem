@@ -104,85 +104,84 @@ void ButiEventSystem::AddEventMessenger <void>(const std::string& arg_eventMesse
 }
 
 template<>
-void ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<int>> arg_func, const int priority)
+std::string ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, const std::string& arg_key, std::function<void(int)> arg_func, const bool canDuplicate, const int priority)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_int.count(arg_eventMessengerName)) {
-		return;
+		return arg_key;
 	}
-	GetMessengersInstance()->map_eventMessenger_int.at(arg_eventMessengerName)->Regist(arg_func, priority);
+	return GetMessengersInstance()->map_eventMessenger_int.at(arg_eventMessengerName)->Regist(arg_key, arg_func,canDuplicate, priority);
 }
 template<>
-void ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<float>> arg_func, const int priority)
+std::string ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, const std::string& arg_key, std::function<void(float)> arg_func, const bool canDuplicate, const int priority)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_float.count(arg_eventMessengerName)) {
-		return;
+		return arg_key;
 	}
-	GetMessengersInstance()->map_eventMessenger_float.at(arg_eventMessengerName)->Regist(arg_func, priority);
+	return GetMessengersInstance()->map_eventMessenger_float.at(arg_eventMessengerName)->Regist(arg_key, arg_func, canDuplicate, priority);
 }
 template<>
-void ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<std::string>> arg_func, const int priority)
+std::string ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, const std::string& arg_key, std::function<void(std::string)> arg_func, const bool canDuplicate, const int priority)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_str.count(arg_eventMessengerName)) {
-		return;
+		return arg_key;
 	}
-	GetMessengersInstance()->map_eventMessenger_str.at(arg_eventMessengerName)->Regist(arg_func, priority);
+	return GetMessengersInstance()->map_eventMessenger_str.at(arg_eventMessengerName)->Regist(arg_key, arg_func, canDuplicate, priority);
 }
 template<>
-void ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<void*>> arg_func, const int priority)
+std::string ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, const std::string& arg_key, std::function<void(void*)> arg_func, const bool canDuplicate, const int priority)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_p_void.count(arg_eventMessengerName)) {
-		return;
+		return arg_key;
 	}
-	GetMessengersInstance()->map_eventMessenger_p_void.at(arg_eventMessengerName)->Regist(arg_func, priority);
+	return GetMessengersInstance()->map_eventMessenger_p_void.at(arg_eventMessengerName)->Regist(arg_key, arg_func, canDuplicate, priority);
 }
-template<>
-void ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<void>> arg_func, const int priority)
+std::string ButiEventSystem::RegistEventListner(const std::string& arg_eventMessengerName, const std::string& arg_key, std::function<void(void)> arg_func, const bool canDuplicate, const int priority)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_void.count(arg_eventMessengerName)) {
-		return;
+		return arg_key;
 	}
-	GetMessengersInstance()->map_eventMessenger_void.at(arg_eventMessengerName)->Regist(arg_func, priority);
+	return GetMessengersInstance()->map_eventMessenger_void.at(arg_eventMessengerName)->Regist(arg_key, arg_func, canDuplicate, priority);
 }
 
 template<>
-void ButiEventSystem::UnRegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<int>> arg_func)
+void ButiEventSystem::UnRegistEventListner<int>(const std::string& arg_eventMessengerName, const std::string & arg_key)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_int.count(arg_eventMessengerName)) {
 		return;
 	}
-	GetMessengersInstance()->map_eventMessenger_int.at(arg_eventMessengerName)->UnRegist(arg_func);
+	GetMessengersInstance()->map_eventMessenger_int.at(arg_eventMessengerName)->UnRegist(arg_key);
 }
 template<>
-void ButiEventSystem::UnRegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<float>> arg_func)
+void ButiEventSystem::UnRegistEventListner<float>(const std::string& arg_eventMessengerName, const std::string& arg_key)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_float.count(arg_eventMessengerName)) {
 		return;
 	}
-	GetMessengersInstance()->map_eventMessenger_float.at(arg_eventMessengerName)->UnRegist(arg_func);
+	GetMessengersInstance()->map_eventMessenger_float.at(arg_eventMessengerName)->UnRegist(arg_key);
 }
 template<>
-void ButiEventSystem::UnRegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<std::string>> arg_func)
+void ButiEventSystem::UnRegistEventListner<std::string>(const std::string& arg_eventMessengerName, const std::string& arg_key)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_str.count(arg_eventMessengerName)) {
 		return;
 	}
-	GetMessengersInstance()->map_eventMessenger_str.at(arg_eventMessengerName)->UnRegist(arg_func);
+	GetMessengersInstance()->map_eventMessenger_str.at(arg_eventMessengerName)->UnRegist(arg_key);
 }
 template<>
-void ButiEventSystem::UnRegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<void*>> arg_func)
+void ButiEventSystem::UnRegistEventListner<void*>(const std::string& arg_eventMessengerName, const std::string& arg_key)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_p_void.count(arg_eventMessengerName)) {
 		return;
 	}
-	GetMessengersInstance()->map_eventMessenger_p_void.at(arg_eventMessengerName)->UnRegist(arg_func);
+	GetMessengersInstance()->map_eventMessenger_p_void.at(arg_eventMessengerName)->UnRegist(arg_key);
 }
 template<>
-void ButiEventSystem::UnRegistEventListner(const std::string& arg_eventMessengerName, std::shared_ptr<EventListenerRegister<void>> arg_func)
+void ButiEventSystem::UnRegistEventListner<void>(const std::string& arg_eventMessengerName, const std::string& arg_key)
 {
 	if (!GetMessengersInstance()->map_eventMessenger_void.count(arg_eventMessengerName)) {
 		return;
 	}
-	GetMessengersInstance()->map_eventMessenger_void.at(arg_eventMessengerName)->UnRegist(arg_func);
+	GetMessengersInstance()->map_eventMessenger_void.at(arg_eventMessengerName)->UnRegist(arg_key);
 }
 
 using PV = void*;
@@ -220,10 +219,12 @@ void ButiEventSystem::Execute(const std::string& arg_eventMessengerName, const P
 }
 void ButiEventSystem::Execute(const std::string& arg_eventMessengerName)
 {
-	auto p_m = GetExEventMessenger(arg_eventMessengerName);
-	if (p_m) {
-		((EventMessenger<void>*)p_m)->Execute();
+	if (!GetMessengersInstance()->map_eventMessenger_void.count(arg_eventMessengerName)) {
+		return;
 	}
+	auto p_m = GetMessengersInstance()->map_eventMessenger_void.at(arg_eventMessengerName);
+
+	p_m->Execute();
 }
 
 template void ButiEventSystem::AddEventMessenger<int>(const std::string& );
@@ -232,17 +233,16 @@ template void ButiEventSystem::AddEventMessenger<std::string>(const std::string&
 template void ButiEventSystem::AddEventMessenger<void*>(const std::string&);
 template void ButiEventSystem::AddEventMessenger<void>(const std::string& );
 
-template void ButiEventSystem::RegistEventListner<int>			(const std::string&,std::shared_ptr<EventListenerRegister<int>> , const int );
-template void ButiEventSystem::RegistEventListner<float>		(const std::string&,std::shared_ptr<EventListenerRegister<float>> , const int );
-template void ButiEventSystem::RegistEventListner<std::string>	(const std::string&,std::shared_ptr<EventListenerRegister<std::string>> , const int );
-template void ButiEventSystem::RegistEventListner<void*>(const std::string&, std::shared_ptr<EventListenerRegister<void*>>, const int);
-template void ButiEventSystem::RegistEventListner<void>		(const std::string&,std::shared_ptr<EventListenerRegister<void>> , const int );
+template std::string ButiEventSystem::RegistEventListner<int>			(const std::string&, const std::string&, std::function<void(int)>, const bool, const int);
+template std::string ButiEventSystem::RegistEventListner<float>		(const std::string&, const std::string&, std::function<void(float)>, const bool, const int);
+template std::string ButiEventSystem::RegistEventListner<std::string>	(const std::string&, const std::string&, std::function<void(std::string)>, const bool, const int);
+template std::string ButiEventSystem::RegistEventListner<void*>(const std::string&, const std::string&, std::function<void(void*)>, const bool, const int);
 
-template void ButiEventSystem::UnRegistEventListner<int>		(const std::string&,std::shared_ptr<EventListenerRegister<int>> );
-template void ButiEventSystem::UnRegistEventListner<float>		(const std::string&,std::shared_ptr<EventListenerRegister<float>> );
-template void ButiEventSystem::UnRegistEventListner<std::string>(const std::string&,std::shared_ptr<EventListenerRegister<std::string>> );
-template void ButiEventSystem::UnRegistEventListner<void*>(const std::string&, std::shared_ptr<EventListenerRegister<void*>>);
-template void ButiEventSystem::UnRegistEventListner<void>		(const std::string&,std::shared_ptr<EventListenerRegister<void>> );
+template void ButiEventSystem::UnRegistEventListner<int>		(const std::string&,const std::string& );
+template void ButiEventSystem::UnRegistEventListner<float>		(const std::string&, const std::string&);
+template void ButiEventSystem::UnRegistEventListner<std::string>(const std::string&, const std::string&);
+template void ButiEventSystem::UnRegistEventListner<void*>(const std::string&, const std::string&);
+template void ButiEventSystem::UnRegistEventListner<void>		(const std::string&, const std::string&);
 
 template void ButiEventSystem::Execute<int>			(const std::string&,const int&);
 template void ButiEventSystem::Execute<float>		(const std::string&,const float&);
