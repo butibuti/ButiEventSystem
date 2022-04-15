@@ -16,13 +16,14 @@ void Initialize()
 {
     unq_taskQueue = std::make_unique<TaskQueue>(16);
 }
-void Start(const int threadSize)
+void Start(const std::int32_t threadSize)
 {
-    GetTaskQueue()->Start();
+    GetTaskQueue()->Start(threadSize);
 }
 void Dispose()
 {
     GetTaskQueue()->Dispose();
+    unq_taskQueue = nullptr;
 }
 std::unique_ptr<TaskQueue>& GetTaskQueue()
 {
@@ -33,13 +34,13 @@ std::unique_ptr<TaskQueue>& GetTaskQueue()
 }
 }
 
-ButiTaskSystem::TaskQueue::TaskQueue(const int taskSize)
+ButiTaskSystem::TaskQueue::TaskQueue(const std::int32_t taskSize)
 {
     p_instance = new ImplInstance();
     p_instance ->lq_task.Resize(taskSize);
 }
 
-void ButiTaskSystem::TaskQueue::Start(const int threadSize)
+void ButiTaskSystem::TaskQueue::Start(const std::int32_t threadSize)
 {
     if (p_instance->vec_thread.size()) {
         throw ButiEngine::ButiException(L"タスクシステムを複数回起動しています");

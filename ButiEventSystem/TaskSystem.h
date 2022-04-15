@@ -7,6 +7,9 @@
 #include<queue>
 namespace ButiTaskSystem {
 
+constexpr std::int32_t defaultThreadSize = 0b1000;
+constexpr std::int32_t defaultTaskSize = 0b10000;
+
 /// <summary>
 /// タスクのインターフェース
 /// </summary>
@@ -67,13 +70,13 @@ private:
 template <typename T>
 class LockedQueue {
 public:
-    LockedQueue(const int arg_size) :Size(arg_size) {}
+    LockedQueue(const std::int32_t arg_size) :Size(arg_size) {}
     LockedQueue() :Size(0) {}
     /// <summary>
     /// 最大サイズの設定
     /// </summary>
     /// <param name="arg_size">設定サイズ</param>
-    void Resize(const int arg_size) { Size = arg_size; }
+    void Resize(const std::int32_t arg_size) { Size = arg_size; }
     /// <summary>
     /// 要素を末尾に追加する
     /// 
@@ -124,7 +127,7 @@ private:
     std::mutex mutex_push, mutex_pop;
     std::condition_variable cv_push, cv_pop;
     std::queue<T> queue_values;
-    int Size;
+    std::int32_t Size;
     bool isEnd=false;
 };
 /// <summary>
@@ -134,14 +137,14 @@ private:
 template <typename T>
 class LockedQueue <std::unique_ptr<T>> {
 public:
-    LockedQueue(const int arg_size) :Size(arg_size) {}
+    LockedQueue(const std::int32_t arg_size) :Size(arg_size) {}
     LockedQueue() :Size(0) {}
 
     /// <summary>
     /// 最大サイズの設定
     /// </summary>
     /// <param name="arg_size">設定サイズ</param>
-    void Resize(const int arg_size) { Size = arg_size; }
+    void Resize(const std::int32_t arg_size) { Size = arg_size; }
 
     /// <summary>
     /// 要素を末尾に追加する
@@ -194,7 +197,7 @@ private:
     std::mutex mtx_guard;
     std::condition_variable cv_push, cv_pop;
     std::queue<std::unique_ptr <T>> queue_values;
-    int Size=0;
+    std::int32_t Size=0;
     bool isEnd = false;
 };
 
@@ -207,12 +210,12 @@ public:
     /// コンストラクタ
     /// </summary>
     /// <param name="taskSize">タスクの最大登録数</param>
-    TaskQueue(const int taskSize = 16);
+    TaskQueue(const std::int32_t taskSize = defaultTaskSize);
     /// <summary>
     /// 開始
     /// </summary>
     /// <param name="threadSize">使用するスレッド数</param>
-    void Start(const int threadSize = 4);
+    void Start(const std::int32_t threadSize = defaultThreadSize);
     /// <summary>
     /// 停止
     /// </summary>
@@ -265,7 +268,7 @@ void Initialize();
 /// タスクシステムの開始
 /// </summary>
 /// <param name="threadSize"></param>
-void Start(const int threadSize = 4);
+void Start(const std::int32_t threadSize = defaultThreadSize);
 /// <summary>
 /// タスクシステムの停止
 /// </summary>
