@@ -1,6 +1,7 @@
 #include"stdafx.h"
 #include<thread>
 #include<functional>
+#include "ButiUtil/ButiUtil/Util.h"
 #include "TaskSystem.h"
 namespace ButiTaskSystem {
 class TaskQueue::ImplInstance {

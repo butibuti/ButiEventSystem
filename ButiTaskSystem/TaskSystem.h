@@ -2,6 +2,11 @@
 #ifndef BUTITASKSYSTEM_H
 #define BUTITASKSYSTEM_H
 
+#ifdef BUTITASKSYSTEM_EXPORTS
+#define BUTITASKSYSTEM_API __declspec(dllexport)
+#else
+#define BUTITASKSYSTEM_API __declspec(dllimport)
+#endif
 #include<mutex>
 #include<future>
 #include<queue>
@@ -210,16 +215,16 @@ public:
     /// コンストラクタ
     /// </summary>
     /// <param name="taskSize">タスクの最大登録数</param>
-    TaskQueue(const std::int32_t taskSize = defaultTaskSize);
+    BUTITASKSYSTEM_API TaskQueue(const std::int32_t taskSize = defaultTaskSize);
     /// <summary>
     /// 開始
     /// </summary>
     /// <param name="threadSize">使用するスレッド数</param>
-    void Start(const std::int32_t threadSize = defaultThreadSize);
+    BUTITASKSYSTEM_API void Start(const std::int32_t threadSize = defaultThreadSize);
     /// <summary>
     /// 停止
     /// </summary>
-    void Dispose();
+    BUTITASKSYSTEM_API void Dispose();
     /// <summary>
     /// タスク追加
     /// </summary>
@@ -255,29 +260,29 @@ private:
     /// <summary>
     /// 各スレッドに割り当てる処理
     /// </summary>
-    void Process();
+    BUTITASKSYSTEM_API void Process();
     class ImplInstance;
-    LockedQueue<std::unique_ptr<ITask>>& GetTaskQueue();
+    BUTITASKSYSTEM_API LockedQueue<std::unique_ptr<ITask>>& GetTaskQueue();
     ImplInstance* p_instance;
 };
 /// <summary>
 /// タスクシステムの初期化
 /// </summary>
-void Initialize();
+BUTITASKSYSTEM_API void Initialize();
 /// <summary>
 /// タスクシステムの開始
 /// </summary>
 /// <param name="threadSize"></param>
-void Start(const std::int32_t threadSize = defaultThreadSize);
+BUTITASKSYSTEM_API void Start(const std::int32_t threadSize = defaultThreadSize);
 /// <summary>
 /// タスクシステムの停止
 /// </summary>
-void Dispose();
+BUTITASKSYSTEM_API void Dispose();
 /// <summary>
 /// タスクキューのインスタンス取得
 /// </summary>
 /// <returns></returns>
-std::unique_ptr<TaskQueue>& GetTaskQueue();
+BUTITASKSYSTEM_API  std::unique_ptr<TaskQueue>& GetTaskQueue();
 /// <summary>
 /// タスクの追加
 /// </summary>

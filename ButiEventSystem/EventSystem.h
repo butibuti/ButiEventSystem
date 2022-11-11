@@ -1,11 +1,17 @@
 #ifndef BUTIEVENTSYSTEM_H
 #define BUTIEVENTSYSTEM_H
 
+#ifdef BUTIEVENTSYSTEM_EXPORTS
+#define BUTIEVENTSYSTEM_API __declspec(dllexport)
+#else
+#define BUTIEVENTSYSTEM_API __declspec(dllimport)
+#endif
 #pragma once
 
 #include<functional>
 #include<algorithm>
-
+#include<string>
+#include<map>
 namespace ButiEventSystem
 {
 /// <summary>
@@ -330,27 +336,27 @@ private:
 };
 
 
-void StartGame();
-void DestroyGameEvent();
+BUTIEVENTSYSTEM_API void StartGame();
+BUTIEVENTSYSTEM_API void DestroyGameEvent();
 
-void EventListnerRegist(const std::string& arg_messengerName, const std::string& arg_listnerName);
+BUTIEVENTSYSTEM_API void EventListnerRegist(const std::string& arg_messengerName, const std::string& arg_listnerName);
 
 /// <summary>
 /// イベントメッセンジャーの取得
 /// </summary>
 /// <param name="arg_evMessengerName">イベント名</param>
 /// <returns>イベントメッセンジャー</returns>
-extern ButiEventSystem::IEventMessenger* GetExEventMessenger(const std::string& arg_evMessengerName);
+BUTIEVENTSYSTEM_API extern ButiEventSystem::IEventMessenger* GetExEventMessenger(const std::string& arg_evMessengerName);
 /// <summary>
 /// イベントメッセンジャーの追加
 /// </summary>
 /// <param name="arg_evMessengerName">イベント名</param>
 /// <param name="arg_evMessenger">イベントメッセンジャー</param>
-extern void AddExEventMessenger(const std::string& arg_evMessengerName,IEventMessenger* arg_evMessenger);
+BUTIEVENTSYSTEM_API extern void AddExEventMessenger(const std::string& arg_evMessengerName,IEventMessenger* arg_evMessenger);
 
-extern void RemoveEventMessenger(const std::string& arg_eventMessengerName);
+BUTIEVENTSYSTEM_API extern void RemoveEventMessenger(const std::string& arg_eventMessengerName);
 
-extern bool ExistEventMessenger(const std::string& arg_eventMessengerName);
+BUTIEVENTSYSTEM_API extern bool ExistEventMessenger(const std::string& arg_eventMessengerName);
 
 /// <summary>
 /// イベントメッセンジャーの追加
