@@ -44,7 +44,7 @@ ButiTaskSystem::TaskQueue::TaskQueue(const std::int32_t taskSize)
 void ButiTaskSystem::TaskQueue::Start(const std::int32_t threadSize)
 {
     if (p_instance->vec_thread.size()) {
-        throw ButiEngine::ButiException(L"タスクシステムを複数回起動しています");
+        throw ButiEngine::ButiException("タスクシステムを複数回起動しています");
         return;
     }
     p_instance->vec_thread.resize(threadSize);
@@ -57,7 +57,7 @@ void ButiTaskSystem::TaskQueue::Start(const std::int32_t threadSize)
 void ButiTaskSystem::TaskQueue::Dispose()
 {
     if (p_instance->isEnd) {
-        throw ButiEngine::ButiException(L"タスクシステムを複数回終了しています");
+        throw ButiEngine::ButiException("タスクシステムを複数回終了しています");
         return;
     }
     p_instance->isEnd = true;
