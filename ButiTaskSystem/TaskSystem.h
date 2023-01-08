@@ -12,8 +12,8 @@
 #include<queue>
 namespace ButiTaskSystem {
 
-constexpr std::int32_t defaultThreadSize = 0b1000;
-constexpr std::int32_t defaultTaskSize = 0b10000;
+constexpr std::int32_t defaultThreadSize = 0b10000;
+constexpr std::int32_t defaultTaskSize = 0b1000000;
 
 /// <summary>
 /// タスクのインターフェース
